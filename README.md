@@ -99,6 +99,12 @@ The seed also creates 1 project and 3 tasks with different statuses (todo, in_pr
 
 **Base URL:** `http://localhost:8000/api`
 
+**Common Request Headers:**
+```
+Accept: application/json
+Authorization: Bearer <jwt_token>
+```
+
 All endpoints except `/auth/*` require:
 ### Authentication
 
@@ -197,10 +203,6 @@ All endpoints except `/auth/*` require:
 
 **Pagination** — All list endpoints return every record. I would add `?page=&limit=` query parameters with a consistent envelope response including `total`, `page`, and `per_page` fields.
 
-**Error handling on the frontend** — Currently some API errors fail silently. I would add a global Axios error interceptor that shows toast notifications for all failed requests and handles 401 responses by redirecting to login automatically.
+**Dark mode** — I would add a dark mode toggle using Tailwind's dark mode class strategy, persisted in localStorage so the user's preference survives page refreshes.
 
-**php-fpm + nginx** — Replace `php artisan serve` with a proper nginx + php-fpm setup in the backend container for better performance and process management.
-
-**Rate limiting** — The auth endpoints have no rate limiting. In production, brute force on `/auth/login` would be a real concern.
-
-**Refresh tokens** — JWT tokens currently expire after 24 hours with no refresh mechanism. Users get logged out without warning.
+**Drag and drop** — I would implement drag-and-drop task reordering using dnd-kit, allowing users to move tasks between status columns (todo, in_progress, done) visually instead of using the dropdown.
