@@ -1,59 +1,130 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TaskFlow — Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+REST API for TaskFlow built with Laravel 12 and PHP 8.2. Handles authentication, project management, and task tracking.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| | |
+|---|---|
+| Language | PHP 8.2 |
+| Framework | Laravel 12 |
+| Database | PostgreSQL 16 |
+| Auth | JWT via tymon/jwt-auth (bcrypt cost 12) |
+| Server | php artisan serve (containerized) |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Project Structure
+backend/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/API/
+│   │   │   ├── AuthController.php
+│   │   │   ├── ProjectController.php
+│   │   │   └── TaskController.php
+│   │   └── Middleware/
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── Project.php
+│   │   └── Task.php
+├── database/
+│   ├── migrations/
+│   │   ├── 0001_01_01_000000_create_users_table.php
+│   │   ├── 0001_01_01_000001_create_cache_table.php
+│   │   ├── 0001_01_01_000002_create_jobs_table.php
+│   │   ├── 2026_04_12_120743_create_projects_table.php
+│   │   └── 2026_04_12_120805_create_tasks_table.php
+│   └── seeders/
+│       └── DatabaseSeeder.php
+├── routes/
+│   └── api.php
+├── docker/
+│   └── start.sh
+└── Dockerfile
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Running with Docker
 
-## Laravel Sponsors
+From the project root:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+docker compose up --build
+```
 
-### Premium Partners
+API available at `http://localhost:8000/api`
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## Running Locally (without Docker)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan jwt:secret
+php artisan migrate --force
+php artisan db:seed --force
+php artisan serve
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Migrations
 
-## Security Vulnerabilities
+Migrations run automatically on container start. To run manually:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+# Run migrations
+docker compose exec backend php artisan migrate --force
 
-## License
+# Roll back
+docker compose exec backend php artisan migrate:rollback
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Fresh migration + seed
+docker compose exec backend php artisan migrate:fresh --seed
+```
+
+### Migration files
+| File | Description |
+|---|---|
+| `0001_01_01_000000_create_users_table` | Users table with UUID primary key |
+| `0001_01_01_000001_create_cache_table` | Laravel cache table |
+| `0001_01_01_000002_create_jobs_table` | Laravel jobs table |
+| `2026_04_12_120743_create_projects_table` | Projects with owner_id FK |
+| `2026_04_12_120805_create_tasks_table` | Tasks with status, priority, assignee, creator |
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| POST | /auth/register | No | Register new user |
+| POST | /auth/login | No | Login, returns JWT |
+| GET | /projects | Yes | List user's projects |
+| POST | /projects | Yes | Create project |
+| GET | /projects/{id} | Yes | Project details + tasks |
+| PATCH | /projects/{id} | Yes | Update project (owner only) |
+| DELETE | /projects/{id} | Yes | Delete project (owner only) |
+| GET | /projects/{id}/tasks | Yes | List tasks, filter by status/assignee |
+| POST | /projects/{id}/tasks | Yes | Create task |
+| PATCH | /tasks/{id} | Yes | Update task |
+| DELETE | /tasks/{id} | Yes | Delete task |
+
+---
+
+## Environment Variables
+
+| Variable | Description |
+|---|---|
+| `APP_KEY` | Laravel app key |
+| `JWT_SECRET` | JWT signing secret |
+| `DB_CONNECTION` | Database driver (pgsql) |
+| `DB_HOST` | Database host (db in Docker) |
+| `DB_DATABASE` | Database name |
+| `DB_USERNAME` | Database user |
+| `DB_PASSWORD` | Database password |
