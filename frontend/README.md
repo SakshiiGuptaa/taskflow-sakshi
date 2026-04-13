@@ -20,25 +20,7 @@ React frontend for TaskFlow built with TypeScript, Vite, Tailwind CSS, and shadc
 
 ## Project Structure
 
-frontend/src/
-├── components/
-│   ├── layout/
-│   │   └── Navbar.tsx
-│   ├── task/
-│   │   ├── TaskCard.tsx
-│   │   └── TaskModal.tsx
-│   └── ui/
-│       └── button.tsx (shadcn components)
-├── context/        # React context for auth state
-├── hooks/          # Custom React hooks
-├── lib/            # Utility functions
-├── pages/          # Route-level components
-├── services/
-│   └── api.ts      # Axios instance + interceptors
-├── types/          # TypeScript type definitions
-├── App.tsx
-├── routes.tsx
-└── main.tsx
+![alt text](image.png)
 
 ---
 

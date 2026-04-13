@@ -17,32 +17,7 @@ REST API for TaskFlow built with Laravel 12 and PHP 8.2. Handles authentication,
 ---
 
 ## Project Structure
-backend/
-├── app/
-│   ├── Http/
-│   │   ├── Controllers/API/
-│   │   │   ├── AuthController.php
-│   │   │   ├── ProjectController.php
-│   │   │   └── TaskController.php
-│   │   └── Middleware/
-│   ├── Models/
-│   │   ├── User.php
-│   │   ├── Project.php
-│   │   └── Task.php
-├── database/
-│   ├── migrations/
-│   │   ├── 0001_01_01_000000_create_users_table.php
-│   │   ├── 0001_01_01_000001_create_cache_table.php
-│   │   ├── 0001_01_01_000002_create_jobs_table.php
-│   │   ├── 2026_04_12_120743_create_projects_table.php
-│   │   └── 2026_04_12_120805_create_tasks_table.php
-│   └── seeders/
-│       └── DatabaseSeeder.php
-├── routes/
-│   └── api.php
-├── docker/
-│   └── start.sh
-└── Dockerfile
+![alt text](image.png)
 
 ---
 
