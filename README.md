@@ -90,7 +90,13 @@ docker compose exec backend php artisan migrate:rollback
 
 ## 5. Test Credentials
 
-A test user is seeded automatically on first startup:
+A test user is seeded automatically on first startup. You can either **register a new account** or use the pre-seeded test credentials below:
+
+> **Recommended:** Register a new account first to explore the full flow, then use the test credentials if you want pre-seeded project and task data ready to go.
+
+Email:    test@example.com
+Password: password123
+
 The seed also creates 1 project and 3 tasks with different statuses (todo, in_progress, done).
 
 ---
